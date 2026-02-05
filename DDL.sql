@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS cafe.restaurants ( -- создаю справочни
 	);
 
 CREATE TABLE IF NOT EXISTS cafe.managers ( -- создаю справочник менеджеров
-	manager_uuid UUID PRIMARY KEY NOT NULL DAFAULT GEN_RANDOM_UUID(),
+	manager_uuid UUID PRIMARY KEY NOT NULL DEFAULT GEN_RANDOM_UUID(),
 	manager VARCHAR, 
 	manager_phone VARCHAR
 	);
