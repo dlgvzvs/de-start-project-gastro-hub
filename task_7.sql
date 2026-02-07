@@ -1,10 +1,10 @@
 BEGIN; -- запускаю транзакцию
-EXCLUSIVE -- разрешаю чтение таблицы, а изменения запрещаю
+LOCK TABLE cafe.managers IN EXCLUSIVE MODE -- прописываю включение блокировки
 ALTER TABLE cafe.managers ADD COLUMN phone_numbers_array -- создаю поле для массива номеров телефонов
 SELECT -- может этот селект переместить в отдельный СТЕ? Сам пока не знаю.
-	ROW_NUMBER() OVER (ORDER BY manager ASC) AS manager_rank -- ранжирую менеджеров по алфавиту
+	ROW_NUMBER() OVER (ORDER BY manager ASC) AS moy_poryadkoviy_nomer_na_rukave -- ранжирую менеджеров по алфавиту
 	manager_phone, -- старый телефон
-	manager_rank + 99 AS corrent_rank -- чтобы отсчёт начинался с числа 100, я добавляю 99
+	moy_poryadkoviy_nomer_na_rukave + 99 AS corrent_rank -- чтобы отсчёт начинался с числа 100, я добавляю 99
 	CONCAT('8-800-2500-', correct_rank) AS new_phone -- тут нужен CONCAT для нового номера телефонаы
 FROM cafe.managers;
 UPDATE cafe.managers -- обновляю данные в новом столбце
