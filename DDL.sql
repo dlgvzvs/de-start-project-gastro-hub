@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS cafe.restaurants ( -- создаю справочни
 	menu JSONB
 	);
 
+SELECT * FROM cafe.restaurants; -- это для проверки, можно удалить. DBeaver косячит, селект работает, а таблицу в списке не видно.
+
 CREATE TABLE IF NOT EXISTS cafe.managers ( -- создаю справочник менеджеров
 	manager_uuid UUID PRIMARY KEY NOT NULL DEFAULT GEN_RANDOM_UUID(),
 	manager VARCHAR, 
@@ -16,9 +18,16 @@ CREATE TABLE IF NOT EXISTS cafe.managers ( -- создаю справочник 
 	);
 
 CREATE TABLE IF NOT EXISTS cafe.restaurant_manager_work_dates ( -- создаю справочник трудового стажа менеджеров
-	restaurant_uuid UUID VARCHAR REFERENCES restaurants(restaurant_uuid),
-	manager_uuid UUID VARCHAR REFERENCES managers(manager_uuid),
+	restaurant_uuid UUID REFERENCES cafe.restaurants(restaurant_uuid),
+	manager_uuid UUID REFERENCES cafe.managers(manager_uuid),
 	start_work_date DATE,
 	end_work_date DATE,
 	PRIMARY KEY (restaurant_uuid, manager_uuid)
+	);
+
+CREATE TABLE IF NOT EXISTS cafe.sales ( -- формирую новую таблицу продаж на основе сырой таблицы
+	date DATE,
+	restaurant_uuid VARCHAR REFERENCES restaurants.restaurant_uuid,
+	avg_check,
+	PRIMARY KEY (date, restaurant_uuid)
 	);
