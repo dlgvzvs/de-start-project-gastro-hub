@@ -5,7 +5,8 @@ SELECT
 	(m.menu -> 'Кофе') ->> 'Капучино'::numeric AS old_capp_price
 	((m.menu -> 'Кофе') ->> 'Капучино'::numeric * 1.2) AS new_capp_price,
 FROM raw_data.menu m
-FOR UPDATE) -- включаю блокировку строк (запрещаю даже чтение)
+WHERE menu -> 'Кофе' ? 'Капучино' -- добавил фильтр по наличию капучино
+) -- убрал блокировку
 
 UPDATE cafe.restaurants
 SET menu = JSONB_SET(menu, '{Кофе, Капучино}', ncp.new_capp_price) -- вставляю новые цены в меню
