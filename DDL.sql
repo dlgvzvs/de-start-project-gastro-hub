@@ -1,3 +1,5 @@
+BEGIN; -- запускаю транзакцию по созданию таблиц
+
 CREATE SCHEMA IF NOT EXISTS cafe; -- создаю схему, если её ещё не было
 
 CREATE TYPE cafe.restaurant_type AS ENUM ('coffee_shop', 'restaurant', 'bar', 'pizzeria'); -- создаю енум для 4 типов заведений
@@ -27,7 +29,10 @@ CREATE TABLE IF NOT EXISTS cafe.restaurant_manager_work_dates ( -- создаю 
 
 CREATE TABLE IF NOT EXISTS cafe.sales ( -- формирую новую таблицу продаж на основе сырой таблицы
 	date DATE,
-	restaurant_uuid VARCHAR REFERENCES restaurants.restaurant_uuid,
-	avg_check,
+	restaurant_uuid UUID REFERENCES cafe.restaurants.restaurant_uuid, -- добавил тип UUID
+	avg_check NUMERIC(6, 2), -- добавил тип NUMERIC как в описании задания
 	PRIMARY KEY (date, restaurant_uuid)
 	);
+
+COMMIT; -- заканчиваю создавать таблицы
+ROLLBACK; -- откатываюсь назад (при необходимости)
